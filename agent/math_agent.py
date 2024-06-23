@@ -557,7 +557,7 @@ def predict(args):
         d['error'] = None
         return d
 
-    dataset = load_dataset('lighteval/MATH', split='test').map(process, True)
+    dataset = load_dataset('lighteval/MATH', split='test', trust_remote_code=True).map(process, True)
     agent = init_agent(
         backend=args.backend,
         max_turn=args.max_turn,
