@@ -612,6 +612,8 @@ def predict(args):
         difficultylist.append("Level")
         typelist.append("General")
     idanswerdataframe = pd.DataFrame({"id": idlist, "level": difficultylist, "type": typelist, "problem": problemlist})
+    idanswerdataframe.to_json('/kaggle/working/InternLM-Math/agent/datasetobj.json, orient='records', lines=True)
+
 
     # %% [code]
     from datasets import Dataset
