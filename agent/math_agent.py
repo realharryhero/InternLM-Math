@@ -570,7 +570,7 @@ def predict(args):
 
     model = Model()
 
-    sys.path.append("/kaggle/working/input")
+    sys.path.append("/kaggle/working/input/ai-mathematical-olympiad-prize")
   
     # %% [code] {"execution":{"iopub.status.busy":"2024-06-27T13:04:21.576400Z","iopub.execute_input":"2024-06-27T13:04:21.576908Z","iopub.status.idle":"2024-06-27T13:04:22.752428Z","shell.execute_reply.started":"2024-06-27T13:04:21.576855Z","shell.execute_reply":"2024-06-27T13:04:22.751271Z"}}
     # Set up the evaluation API
