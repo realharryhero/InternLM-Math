@@ -557,7 +557,7 @@ def predict(args):
         d['error'] = None
         return d
 
-    dataset = Dataset.from_json("/kaggle/working/InternLM/agent/jsondataset")
+    dataset = Dataset.from_json("/kaggle/input/InternLM/agent/jsondataset")
     
     agent = init_agent(
         backend=args.backend,
