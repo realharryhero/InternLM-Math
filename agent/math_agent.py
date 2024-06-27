@@ -556,68 +556,8 @@ def predict(args):
         d['pred'], d['steps'] = [], []
         d['error'] = None
         return d
-    # %% [markdown]
-    # This notebook demonstrates the use of the evaluation API for the AIMO competition. It has the following features:
-    # - Test problems are served to your model one-at-a-time and in random order. The random ordering will vary across submissions.
-    # - Each problem will only be served once. You must make a prediction for each problem before being served the next problem. You cannot change previously made predictions.
 
-    # %% [code] {"execution":{"iopub.status.busy":"2024-06-27T13:04:21.531972Z","iopub.execute_input":"2024-06-27T13:04:21.532875Z","iopub.status.idle":"2024-06-27T13:04:21.573533Z","shell.execute_reply.started":"2024-06-27T13:04:21.532804Z","shell.execute_reply":"2024-06-27T13:04:21.572200Z"}}
-    # Define your model
-
-    class Model:
-        def predict(self, x):
-            return 123
-
-    model = Model()
-
-    sys.path.append("/kaggle/working/input/ai-mathematical-olympiad-prize")
-  
-    # %% [code] {"execution":{"iopub.status.busy":"2024-06-27T13:04:21.576400Z","iopub.execute_input":"2024-06-27T13:04:21.576908Z","iopub.status.idle":"2024-06-27T13:04:22.752428Z","shell.execute_reply.started":"2024-06-27T13:04:21.576855Z","shell.execute_reply":"2024-06-27T13:04:22.751271Z"}}
-    # Set up the evaluation API
-    import aimo
-
-    env = aimo.make_env()
-
-    # %% [code] {"execution":{"iopub.status.busy":"2024-06-27T13:04:22.753723Z","iopub.execute_input":"2024-06-27T13:04:22.754163Z","iopub.status.idle":"2024-06-27T13:04:22.759674Z","shell.execute_reply.started":"2024-06-27T13:04:22.754134Z","shell.execute_reply":"2024-06-27T13:04:22.758320Z"}}
-    iter_test = env.iter_test()
-
-    # %% [markdown]
-    # Note that this public version of the API does not randomize the order in which problems are served. The API used when your submission is scored will randomize the order.
-
-    # %% [code] {"execution":{"iopub.status.busy":"2024-06-27T13:04:22.761150Z","iopub.execute_input":"2024-06-27T13:04:22.761543Z","iopub.status.idle":"2024-06-27T13:04:22.770874Z","shell.execute_reply.started":"2024-06-27T13:04:22.761507Z","shell.execute_reply":"2024-06-27T13:04:22.769538Z"}}
-    import pandas as pd
-
-    # %% [code] {"execution":{"iopub.status.busy":"2024-06-27T13:04:22.773793Z","iopub.execute_input":"2024-06-27T13:04:22.774218Z","iopub.status.idle":"2024-06-27T13:04:22.847323Z","shell.execute_reply.started":"2024-06-27T13:04:22.774180Z","shell.execute_reply":"2024-06-27T13:04:22.846201Z"}}
-    # Iterate through the test set and use the model make predictions
-    testlist = []
-    submissionlist = []
-    for test, sample_submission in iter_test:
-        testlist.append(test)
-        submissionlist.append(sample_submission)
-        sample_submission['answer'] = model.predict(test['problem'])
-    
-    print(testlist)
-    print(submissionlist)
-
-    # %% [code] {"execution":{"iopub.status.busy":"2024-06-27T13:04:22.859793Z","iopub.execute_input":"2024-06-27T13:04:22.860277Z","iopub.status.idle":"2024-06-27T13:04:22.866568Z","shell.execute_reply.started":"2024-06-27T13:04:22.860235Z","shell.execute_reply":"2024-06-27T13:04:22.865305Z"}}
-    idlist = []
-    problemlist = []
-    difficultylist = []
-    typelist = []
-
-    # %% [code] {"execution":{"iopub.status.busy":"2024-06-27T13:04:22.868138Z","iopub.execute_input":"2024-06-27T13:04:22.868520Z","iopub.status.idle":"2024-06-27T13:04:22.879735Z","shell.execute_reply.started":"2024-06-27T13:04:22.868490Z","shell.execute_reply":"2024-06-27T13:04:22.878757Z"}}
-    for i in range(len(testlist)):
-        idlist.append(testlist[i]["id"][0])
-        problemlist.append(testlist[i]["problem"][0])
-        difficultylist.append("Level")
-        typelist.append("General")
-    idanswerdataframe = pd.DataFrame({"id": idlist, "level": difficultylist, "type": typelist, "problem": problemlist})
-    idanswerdataframe.to_json('/kaggle/working/InternLM-Math/agent/datasetobj.json, orient='records', lines=True)
-
-
-    # %% [code]
-    from datasets import Dataset
-    dataset = Dataset.from_pandas(idanswerdataframe)
+    dataset = Dataset.from_json("/kaggle/working/InternLM/agent/jsondataset")
     
     agent = init_agent(
         backend=args.backend,
